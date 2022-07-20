@@ -31,4 +31,6 @@ jobs:
       run: dotnet pack -c Release -p:PackageVersion=$(cat .version)
     - name: Publish Nuget
       run: dotnet nuget push **/*.nupkg
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.ASSECONUGET }}
   
