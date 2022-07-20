@@ -27,7 +27,7 @@ jobs:
     - name: Pack   
       run: dotnet pack -c Release -p:PackageVersion=$(cat .version)
     - name: Publish Nuget
-      run: dotnet nuget push **/*.nupkg -k ${ASSECONUGET} -s https://devops.see.asseco.com/Digital/_packaging/Asseco/nuget/v3/index.json --skip-duplicate
+      run: dotnet nuget push **/*.nupkg -k "${ASSECONUGET}" -s "https://devops.see.asseco.com/Digital/_packaging/Asseco/nuget/v3/index.json" --skip-duplicate
       env:
         ASSECONUGET: ${{ secrets.ASSECONUGET }}
   
