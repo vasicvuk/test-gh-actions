@@ -1,0 +1,34 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Pack   
+      run: dotnet pack -c Release -p:PackageVersion=$(cat .version)
+    - name: Publish
+      shell: cmd
+      env: 
+        ASSECONUGET: ${{ secrets.ASSECONUGET }}   
+      run: dotnet nuget push **/*.nupkg --api-key "%ASSECONUGET%" --source https://devops.see.asseco.com/Digital/_packaging/Asseco/nuget/v3/index.json --skip-duplicate  
+
