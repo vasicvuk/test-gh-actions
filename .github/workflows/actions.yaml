@@ -18,6 +18,9 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+        source-url: https://devops.see.asseco.com/Digital/_packaging/Asseco/nuget/v3/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.ASSECONUGET }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -27,7 +30,5 @@ jobs:
     - name: Pack   
       run: dotnet pack -c Release -p:PackageVersion=$(cat .version)
     - name: Publish Nuget
-      run: dotnet nuget push **/*.nupkg -k "${ASSECONUGET}" -s "https://devops.see.asseco.com/Digital/_packaging/Asseco/nuget/v3/index.json" --skip-duplicate
-      env:
-        ASSECONUGET: ${{ secrets.ASSECONUGET }}
+      run: dotnet nuget push **/*.nupkg -k AzureArtifacts --skip-duplicate
   
